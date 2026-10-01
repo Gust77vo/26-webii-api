@@ -1,0 +1,22 @@
+info:
+  name: Health check v1
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/v1/health"
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Retorna o health específico da v1", function() {
+          expect(res.status).to.equal(200);
+          expect(res.body.version).to.equal("v1");
+          expect(res.body.status).to.equal("OK");
+          expect(res.body.message).to.equal("API v1 do Gerador de Provas");
+        });
+
+settings:
+  encodeUrl: true
