@@ -1,5 +1,5 @@
-import prisma from "../config/database.js";
-import { ConflictError, NotFoundError } from "../errors/AppError.js";
+import prisma from "../../../config/database.js";
+import { ConflictError, NotFoundError } from "../../../errors/AppError.js";
 
 const publicUserSelect = {
   id: true,
@@ -61,7 +61,9 @@ export async function createSubject(subjectData) {
   });
 
   if (!professor) {
-    throw new NotFoundError(`Professor com ID ${subjectData.professorId} não encontrado`);
+    throw new NotFoundError(
+      `Professor com ID ${subjectData.professorId} não encontrado`,
+    );
   }
 
   return prisma.subject.create({
@@ -109,7 +111,8 @@ export async function updateSubject(subjectId, subjectData) {
 
   if (subjectData.nome !== undefined) data.nome = subjectData.nome.trim();
   if (subjectData.ativa !== undefined) data.ativa = subjectData.ativa;
-  if (subjectData.professorId !== undefined) data.professorId = subjectData.professorId;
+  if (subjectData.professorId !== undefined)
+    data.professorId = subjectData.professorId;
 
   return prisma.subject.update({
     where: { id: subjectId },

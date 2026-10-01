@@ -1,8 +1,6 @@
 //src/app.js
 import express from "express";
 import prisma from "./config/database.js";
-import subjectRoutes from "./routes/subjectRoutes.js";
-import questionRoutes from "./routes/questionRoutes.js";
 import v1Routes from "./api/v1/routes/index.js";
 import errorHandler, { notFoundHandler } from "./middlewares/errorHandler.js";
 
@@ -40,9 +38,6 @@ app.get("/health", async (_req, res) => {
     });
   }
 });
-
-app.use("/subjects", subjectRoutes);
-app.use("/questions", questionRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

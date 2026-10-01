@@ -1,5 +1,5 @@
-import prisma from "../config/database.js";
-import { NotFoundError } from "../errors/AppError.js";
+import prisma from "../../../config/database.js";
+import { NotFoundError } from "../../../errors/AppError.js";
 
 const publicUserSelect = {
   id: true,
@@ -99,17 +99,24 @@ export async function createQuestion(questionData) {
 
   if (!relations.ok) {
     if (relations.reason === "SUBJECT_NOT_FOUND") {
-      throw new NotFoundError(`Matéria com ID ${questionData.subjectId} não encontrada`);
+      throw new NotFoundError(
+        `Matéria com ID ${questionData.subjectId} não encontrada`,
+      );
     }
 
-    throw new NotFoundError(`Autor com ID ${questionData.authorId} não encontrado`);
+    throw new NotFoundError(
+      `Autor com ID ${questionData.authorId} não encontrado`,
+    );
   }
 
   return prisma.question.create({
     data: {
       enunciado: questionData.enunciado.trim(),
       dificuldade: questionData.dificuldade,
-      respostaCorreta: questionData.respostaCorreta === undefined ? null : questionData.respostaCorreta?.trim() || null,
+      respostaCorreta:
+        questionData.respostaCorreta === undefined
+          ? null
+          : questionData.respostaCorreta?.trim() || null,
       subjectId: questionData.subjectId,
       authorId: questionData.authorId,
       ativa: questionData.ativa ?? true,
@@ -139,10 +146,14 @@ export async function updateQuestion(questionId, questionData) {
 
   if (!relations.ok) {
     if (relations.reason === "SUBJECT_NOT_FOUND") {
-      throw new NotFoundError(`Matéria com ID ${questionData.subjectId} não encontrada`);
+      throw new NotFoundError(
+        `Matéria com ID ${questionData.subjectId} não encontrada`,
+      );
     }
 
-    throw new NotFoundError(`Autor com ID ${questionData.authorId} não encontrado`);
+    throw new NotFoundError(
+      `Autor com ID ${questionData.authorId} não encontrado`,
+    );
   }
 
   const data = {};
@@ -156,7 +167,10 @@ export async function updateQuestion(questionId, questionData) {
   }
 
   if (questionData.respostaCorreta !== undefined) {
-    data.respostaCorreta = questionData.respostaCorreta === null ? null : questionData.respostaCorreta.trim();
+    data.respostaCorreta =
+      questionData.respostaCorreta === null
+        ? null
+        : questionData.respostaCorreta.trim();
   }
 
   if (questionData.subjectId !== undefined) {
